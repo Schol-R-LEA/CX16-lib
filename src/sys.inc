@@ -1,6 +1,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Macros accompanying a minimal Commander X16 library
-;; Time-stamp: <2019-09-30 02:11:52 schol-r-lea>
+;; Time-stamp: <2019-09-30 13:00:03 schol-r-lea>
 
 .include "kernal.inc"
 
@@ -10,13 +10,13 @@ CR = $0D
 LF = $0A
 
 ;;; ROM Banks
-.scope RB
-	BASIC  = $00
-	GEOS   = $04
-	CBDOS  = $05
-	Keymap = $06	
-	Kernal = $07
-.endscope
+.enum RB
+	BASIC
+	GEOS        = $04
+	CBDOS
+	Keymap	
+	Kernal
+.endenum
 
 
 .scope IO
@@ -30,11 +30,10 @@ LF = $0A
 	;; 
 	.scope VIA
 		Ctrl0_Base  = $9F60
-	.scope Banks
+	.enum Banks
 			Mem = $9F60	
-			ROM = $9F61
-			
-		.endscope
+			ROM	
+	.endenum
 	Ctrl1_Base  = $9F70
 	.endscope
 	;; 
