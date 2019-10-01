@@ -1,6 +1,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Macros accompanying a minimal Commander X16 library
-;; Time-stamp: <2019-09-30 13:00:03 schol-r-lea>
+;; Time-stamp: <2019-09-30 13:30:25 schol-r-lea>
 
 .include "kernal.inc"
 
