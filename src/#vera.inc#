@@ -50,6 +50,8 @@
 	sta Reg::hi
 	lda #data_lo
 	sta Reg::lo
+	pla
+	sta Reg::select
     .endmacro
 
     .macro init
