@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Commander X16
 ;; Declarations and macros for operating on the VERA video system
-;; Time-stamp: <2019-10-01 14:33:17 schol-r-lea>
+;; Time-stamp: <2019-10-01 15:38:35 schol-r-lea>
 
 .scope VERA
     Reg_Base = $9F20
@@ -50,6 +50,8 @@
 	sta Reg::hi
 	lda #data_lo
 	sta Reg::lo
+	pla
+	sta Reg::select
     .endmacro
 
     .macro init
