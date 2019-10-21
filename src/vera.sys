@@ -1,5 +1,59 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Commander X16
 ;; Functions and exports for operating on the VERA video system
-;; Time-stamp: <2019-09-30 22:05:00 schol-r-lea>
+;; Time-stamp: <2019-10-01 19:25:04 schol-r-lea>
 
+
+.include "vera.inc"
+
+;;; compose - write to a Composer data register file
+;;;    stack args in push order:
+;;;          # of the register file to write to (pallete, sprite, etc.)
+;;;          destination offset in register file
+;;;          buffer size
+;;;          buffer page (high part of buffer address)
+;;;          buffer address
+;;;    zp sratch vars:
+;;;          0 = stack pointer
+
+.proc compose
+    fp = VERA::ZP_Scratch + 0
+    buffer  = 2
+    bufsize = 4
+    dest    = 5
+    regfile = 6
+    s_end   = 1
+    d_end   = 2
+
+    sei
+    tsx
+    stx fp
+    lda (fp+buffer)      
+    adc (fp+bufsize)
+    pha                             ; init l_end                            
+    lda   
+    lda (fp+regfile)
+    sla 4                           ; shift regfile # to the hi nibble
+    
+    
+    lda #VRAM::Composer_Base        ; select the Composer bank
+    sta Reg::select
+
+    
+    jmp eos
+    
+write:
+    ora #(data_hi & $E0)            ; put data hi byte into lo nibble
+    sta Reg::hi
+    lda #data_lo
+    sta Reg::lo
+eos:
+    
+
+    cli
+    rts
+
+regfile:     .byte 0
+src:         .byte 0
+
+.endproc

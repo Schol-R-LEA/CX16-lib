@@ -1,9 +1,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Commander X16
 ;; Declarations and macros for operating on the VERA video system
-;; Time-stamp: <2019-10-01 15:38:35 schol-r-lea>
+;; Time-stamp: <2019-10-01 16:57:48 schol-r-lea>
 
 .scope VERA
+    ; zero-page space for saving statuses during operations
+    ZP_Scratch = $F0    ; reserved ZP mem for sratch
+
     Reg_Base = $9F20
     .enum Reg
         lo = Reg_Base
@@ -31,7 +34,7 @@
     .macro set_bank bank
         lda Reg::select
         and #($F0 & bank)               ; combine hi nibble with lo nibble const
-       sta Reg::select
+        sta Reg::select
     .endmacro
 
     .macro set_stride stride
@@ -40,19 +43,7 @@
         sta Reg::select
     .endmacro
 
-    .macro compose cluster, data_hi, data_lo
-        lda Reg::select
-	pha
-        lda #VRAM::Composer_Base
-	sta Reg::select
-        lda #(cluster << 4)             ; shift base to the hi nibble
-        ora #(data_hi & $E0)            ; put data hi byte into lo nibble
-	sta Reg::hi
-	lda #data_lo
-	sta Reg::lo
-	pla
-	sta Reg::select
-    .endmacro
+
 
     .macro init
         
