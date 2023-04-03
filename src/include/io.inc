@@ -1,22 +1,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Macros accompanying a minimal Commander X16 system library
-;; Time-stamp: <2019-10-16 09:09:06 schol-r-lea>
+;; Time-stamp: <2020-08-17 10:32:48 schol-r-lea>
+
+.ifndef IO__INC
+.define IO__INC
+
 
 .include "kernal.inc"
 
 ;;; common constants
-; Carriage Return and Line Feed 
+; Carriage Return and Line Feed
 CR = $0D
 LF = $0A
-
-;;; ROM Banks
-.enum RB
-	Kernal
-	Keyboard
-	CBDOS	
-	GEOS
-	BASIC
-.endenum
 
 
 .scope IO
@@ -29,10 +24,10 @@ LF = $0A
 	.endscope
 	;; 
 	.scope VIA
-		Ctrl0_Base  = $9F60
+	Ctrl0_Base  = $9F60
 	.enum Banks
-			Mem = $9F60	
-			ROM	
+			Mem = $9F60
+			ROM
 	.endenum
 	Ctrl1_Base  = $9F70
 	.endscope
@@ -41,33 +36,15 @@ LF = $0A
 	Base        = $9F80
 	.endscope
 .endscope
-	
-;;; Entry point for a standard assembly program
-PRG_BASE = $0801
-	
-.macro CX16_HEADER
-	.org PRG_BASE
-	.byte $0b,$08,$01,$00,$9e,$32,$30,$36,$31,$00,$00,$00
-.endmacro
-
-.macro set_membank bank
-	lda bank
-	sta IO::VIA::Banks::Mem
-.endmacro
-	
-.macro set_rombank bank
-	lda bank
-	sta IO::VIA::Banks::ROM	
-.endmacro
 
 .macro ISO_mode
 	lda #$0F
-	jsr BASOUT
+	jsr CHROUT
 .endmacro
 
 .macro PET_mode
 	lda #$8F
-	jsr BASOUT
+	jsr CHROUT
 .endmacro
 	
 ;;; inline print call using the Kernal BASOUT function
@@ -77,25 +54,27 @@ PRG_BASE = $0801
 
 .macro print src
 .scope
-        ldy #0          ; starting string index
-	jmp test	; jump to test, bypassing string
+    ldy #0          ; starting string index
+	jmp test	    ; jump to test, bypassing string
 
-				
+
 str: 	.asciiz src
-			; location of the inlined string
-	
-loop:
-        jsr BASOUT      ; print character
-        iny		; increment index
-test: 	
-	lda str, y      ; get a character
-        bne loop 	; if not end of string, continue
-.endscope
-.endmacro	
+	     	     	; location of the inlined string
 
-	
+loop:
+    jsr CHROUT      ; print character
+    iny		        ; increment index
+test:
+	lda str, y      ; get a character
+    bne loop 	    ; if not end of string, continue
+.endscope
+.endmacro
+
+
 .macro println src
 	print src
         lda #CR
-	jsr BASOUT
-.endmacro	
+	jsr CHROUT
+.endmacro
+
+.endif

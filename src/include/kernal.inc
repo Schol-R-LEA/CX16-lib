@@ -1,7 +1,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Commander X16 ROM functions
-;; Time-stamp: <2019-09-29 20:09:12 schol-r-lea>
-
+;; Time-stamp: <2022-03-17 00:23:45 schol-r-lea>
+.ifndef KERNAL__INC
+.define KERNAL__INC
 
 ;;; Commander X16 native ROM routines
 MONITOR  = $FF00   	 ; enter monitor
@@ -20,8 +21,8 @@ CLOSE    = $FFC3	; close a channel
 CHKIN    = $FFC6  	; set channel for character input
 CHKOUT   = $FFC9	; set channel for character output
 CLRCHN   = $FFCC	; restore character I/O to screen/keyboard
-BASIN    = $FFCF	; get character
-BASOUT   = $FFD2	; write character
+CHRIN    = $FFCF	; get character
+CHROUT   = $FFD2	; write character
 LOAD     = $FFD5 	; load a file into memory
 SAVE     = $FFD8 	; save a file from memory
 CLALL    = $FFE7 	; close all channels
@@ -64,3 +65,5 @@ FETCH     = $FF74 	; LDA (fetvec),Y from any bank
 STASH     = $FF77 	; STA (stavec),Y to any bank
 CMPARE    = $FF7A 	; CMP (cmpvec),Y to any bank
 PRIMM     = $FF7D 	; print string following the caller’s code
+
+.endif
